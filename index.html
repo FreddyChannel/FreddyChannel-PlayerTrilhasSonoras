@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎼 TRILHAS SONORAS
+</title>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@900&display=swap" rel="stylesheet">
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#1F3850;
+    color:white;
+}
+.container{max-width:900px;margin:auto;padding:20px}
+.header{text-align:center;margin-bottom:20px}
+.header h1{
+    color:#00d8ff;
+    font-family:'Lexend',sans-serif;
+    font-weight:900;
+    font-size:30px !important;
+}
+.player{background:#1b2638;border-radius:15px;padding:20px}
+#currentSong{font-size:20px;margin-bottom:10px}
+audio{width:100%}
+.controls{display:flex;justify-content:center;gap:10px;margin-top:15px;flex-wrap:wrap}
+button{background:#00d8ff;border:none;border-radius:8px;padding:10px 18px;font-size:16px;cursor:pointer;font-weight:bold}
+.playlist{margin-top:20px;max-height:500px;overflow-y:auto}
+.song{padding:12px;margin:5px 0;border-radius:10px;background:#243248;cursor:pointer}
+.song:hover{background:#1F3850}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🎼 TRILHAS SONORAS</h1>
+<p>Playlist Oficial • 30 Faixas</p>
+</div>
+<div class="player">
+<div id="currentSong">Selecione uma música</div>
+<audio id="audio" controls></audio>
+<button onclick="prevSong()">⏮️ PREVIOUS</button>
+<button onclick="togglePlay()">▶️ PLAY</button>
+<button onclick="nextSong()">⏭️ NEXT</button>
+</div>
+<div class="playlist" id="playlist"></div>
+</div>
+</div>
+<script>
+const songs = [
+{
+title:"🌍 Planeta Furry",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Planeta%20Furry.mp3"
+},
+{
+title:"⭐ O Grande Sonho",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/1.%20O%20Grande%20Sonho.mp3"
+},
+{
+title:"🐰 Missão Páscoa Pixelada",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/2.%20Miss%C3%A3o%20P%C3%A1scoa%20Pixelada.mp3"
+},
+{
+title:"🏆 Jogo Mundial",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/3.%20Jogo%20Mundial.mp3"
+},
+{
+title:"🎉 Meu Dia Animado",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/4.%20Meu%20Dia%20Animado.mp3"
+},
+{
+title:"🌕 Luar da Caçada",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Luar%20da%20Ca%C3%A7ada%20(1).mp3"
+},
+{
+title:"❄️ Temporada de Inverno",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/6.%20Temporada%20de%20Inverno.mp3"
+},
+{
+title:"⛅ Novo Amanhecer",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Novo%20Amanhecer.mp3"
+},
+{
+title:"🏖️ Patas para Cima",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Patas%20para%20Cima%20(2).mp3"
+},
+{
+title:"🚀 Jornada Estelar",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Jornada%20Estelar.mp3"
+},
+{
+title:"🔥 Chamas de São João",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/10.%20Chamas%20de%20S%C3%A3o%20Jo%C3%A3o.mp3"
+},
+{
+title:"💻 Universo Digital",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/11.%20Universo%20Digital.mp3"
+},
+{
+title:"💎 O Poder dos Cristais",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/O%20Poder%20dos%20Cristais%20(2).mp3"
+},
+{
+title:"🎭 Carnaval sem Fim",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/13.%20Carnaval%20sem%20Fim.mp3"
+},
+{
+title:"☁️ Turismo do Céu",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Turismo%20do%20C%C3%A9u.mp3"
+},
+{
+title:"🎨 Aprender e Colorir",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/15.%20Aprender%20e%20Colorir.mp3"
+},
+{
+title:"📸 Pequenas Memórias",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/16.%20Pequenas%20Mem%C3%B3rias.mp3"
+},
+{
+title:"🛍️ Lugar Iluminado",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Lugar%20Iluminado.mp3"
+},
+{
+title:"🎤 Rap em Alta Velocidade",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Rap%20em%20Alta%20Velocidade.mp3"
+},
+{
+title:"🏮 Festival Chinês",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Festival%20Chin%C3%AAs%20(1).mp3"
+},
+{
+title:"📖 Reino dos Sonhos",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Reino%20dos%20Sonhos.mp3"
+},
+{
+title:"🎵 Mundo da Música",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Mundo%20da%20M%C3%BAsica.mp3"
+},
+{
+title:"🎭 Andamento Cultural",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Andamento%20Cultural.mp3"
+},
+{
+title:"🎸 Festival dos Ritmos",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Festival%20dos%20Ritmos.mp3"
+},
+{
+title:"🌳 Floresta das Estações",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Floresta%20das%20Esta%C3%A7%C3%B5es.mp3"
+},
+{
+title:"🌊 Aventura no Mar Azul",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Aventura%20no%20Mar%20Azul.mp3"
+},
+{
+title:"❤️ Minha Família de Coração",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Minha%20Família%20de%20Coração.mp3"
+},
+{
+title:"⚽ Campeões do Amanhã",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Campeões%20do%20Amanhã.mp3"
+},
+{
+title:"💤 Diferentes Sonhos",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/28.%20Diferentes%20Sonhos.mp3"
+},
+{
+title:"👻 Cidade Fantasma",
+file:"https://raw.githubusercontent.com/FreddyChannel/FreddyChannel-PlayerMusic/main/music/Cidade%20Fantasma%20(1).mp3"
+}
+];
+
+const audio=document.getElementById("audio");
+const playlist=document.getElementById("playlist");
+const currentSongText=document.getElementById("currentSong");
+let currentIndex=0;
+function loadSong(i){currentIndex=i;audio.src=songs[i].file;currentSongText.textContent=songs[i].title;}
+function nextSong(){currentIndex=(currentIndex+1)%songs.length;loadSong(currentIndex);audio.play();}
+function prevSong(){currentIndex=(currentIndex-1+songs.length)%songs.length;loadSong(currentIndex);audio.play();}
+function togglePlay(){audio.paused?audio.play():audio.pause();}
+audio.addEventListener("ended",nextSong);
+songs.forEach((song,index)=>{
+ const div=document.createElement("div");
+ div.className="song";
+ div.textContent=song.title;
+ div.onclick=()=>{loadSong(index);audio.play();};
+ playlist.appendChild(div);
+});
+loadSong(0);
+</script>
+</body>
+</html>
